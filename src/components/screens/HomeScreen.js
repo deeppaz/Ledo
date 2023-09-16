@@ -4,7 +4,7 @@ import React from 'react'
 const HomeScreen = () => {
   return (
     <View>
-      <Text>HomeScreen</Text>
+      <Text>Hello its Home Screen</Text>
     </View>
   )
 }
