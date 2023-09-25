@@ -1,8 +1,17 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Layout, Text } from 'react-native-rapi-ui';
+import {
+	Layout, 
+	Button, 
+	Text, 
+	useTheme, 
+	Section,
+	SectionContent,
+} from 'react-native-rapi-ui';
 
 export default function ({ navigation }) {
+	const { isDarkmode, setTheme } = useTheme();
+
 	return (
 		<Layout>
 			<View
@@ -12,7 +21,25 @@ export default function ({ navigation }) {
 					justifyContent: 'center',
 				}}
 			>
-				<Text>This is the Profile tab</Text>
+				<Section>
+					<SectionContent>
+						<Text>This is the Profile tab</Text>
+						<Button
+							text={isDarkmode ? "Light Mode" : "Dark Mode"}
+							status={isDarkmode ? "success" : "warning"}
+							onPress={() => {
+								if (isDarkmode) {
+									setTheme("light");
+								} else {
+									setTheme("dark");
+								}
+							}}
+							style={{
+								marginTop: 10,
+							}}
+						/>
+					</SectionContent>
+				</Section>
 			</View>
 		</Layout>
 	);
