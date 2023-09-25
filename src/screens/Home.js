@@ -2,15 +2,13 @@ import React from "react";
 import { View, Linking } from "react-native";
 import {
   Layout,
-  Button,
   Text,
   Section,
   SectionContent,
-  useTheme,
+  Button
 } from "react-native-rapi-ui";
 
 export default function ({ navigation }) {
-  const { isDarkmode, setTheme } = useTheme();
   return (
     <Layout>
       <View
@@ -24,15 +22,9 @@ export default function ({ navigation }) {
         <Section>
           <SectionContent>
             <Text fontWeight="bold" style={{ textAlign: "center" }}>
-              These UI components provided by Rapi UI
+              Welcome to the Wakeup Sunshine
             </Text>
-            <Button
-              style={{ marginTop: 10 }}
-              text="Rapi UI Documentation"
-              status="info"
-              onPress={() => Linking.openURL("https://rapi-ui.kikiding.space/")}
-            />
-            <Button
+            {/* <Button
               text="Go to second screen"
               onPress={() => {
                 navigation.navigate("SecondScreen");
@@ -40,18 +32,10 @@ export default function ({ navigation }) {
               style={{
                 marginTop: 10,
               }}
-            />
-
-            <Button
-              text={isDarkmode ? "Light Mode" : "Dark Mode"}
-              status={isDarkmode ? "success" : "warning"}
-              onPress={() => {
-                if (isDarkmode) {
-                  setTheme("light");
-                } else {
-                  setTheme("dark");
-                }
-              }}
+            /> */}
+             <Button
+              text="Turn On"
+        
               style={{
                 marginTop: 10,
               }}
