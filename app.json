@@ -1,4 +1,13 @@
 {
-  "name": "Ledo",
-  "displayName": "Ledo"
+  "expo": {
+    "scheme": "acme",
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "name": "Ledo",
+    "slug": "Ledo"
+  }
 }
