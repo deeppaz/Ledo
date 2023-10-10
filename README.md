@@ -28,9 +28,8 @@ Wakeup Sunshine
 
 These are the folders and the functionality
 
-```jsx
-/src/assets -> for media such as images, etc
-/src/components -> for components
+```js
+/src/components/utils -> for components
 /src/navigation -> for React Navigation
 /src/screens -> for Screens
 ```
