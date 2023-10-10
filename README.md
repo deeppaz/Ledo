@@ -2,6 +2,12 @@
 
 Wakeup Sunshine
 
+
+
+https://github.com/deeppaz/WakeupSunshine/assets/37597027/b9012233-821a-46d3-b18b-24089f550585
+
+
+
 # Installation
 
 1. Install [node.js](https://nodejs.org/en/)
