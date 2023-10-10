@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "withBottomTabs",
-    "slug": "withBottomTabs",
+    "name": "wakeupshunsine",
+    "slug": "wakeupshunsine",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,10 +17,43 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.deeppaz.wakeupshunsine"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "android": {
+      "package": "com.deeppaz.wakeupshunsine",
+      "permissions": [
+        "android.permission.BLUETOOTH",
+        "android.permission.BLUETOOTH_ADMIN",
+        "android.permission.BLUETOOTH_SCAN",
+        "android.permission.BLUETOOTH_CONNECT"
+      ]
+    },
+    "plugins": [
+      [
+        "@config-plugins/react-native-ble-plx",
+        {
+          "isBackgroundEnabled": true,
+          "modes": ["peripheral", "central"],
+          "bluetoothAlwaysPermission": "Allow $(PRODUCT_NAME) to connect to bluetooth devices"
+        }
+      ],
+      ["with-rn-bluetooth-classic", {
+        "peripheralUsageDescription": "Allow myDevice to check bluetooth peripheral info",
+        "alwaysUsageDescription": "Allow myDevice to always use bluetooth info",
+        "protocols": [
+          "com.deeppaz.wakeupshunsine"
+        ]
+      }
+    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "8e8fee90-c894-4f26-96f2-5d6cfd04e967"
+      }
     }
   }
 }

@@ -7,13 +7,15 @@ import {
 	useTheme, 
 	Section,
 	SectionContent,
+	TopNav,
 } from 'react-native-rapi-ui';
 
-export default function ({ navigation }) {
+export default function Profile({ navigation }) {
 	const { isDarkmode, setTheme } = useTheme();
 
 	return (
 		<Layout>
+			<TopNav middleContent="Profile" />
 			<View
 				style={{
 					flex: 1,
@@ -23,7 +25,6 @@ export default function ({ navigation }) {
 			>
 				<Section>
 					<SectionContent>
-						<Text>This is the Profile tab</Text>
 						<Button
 							text={isDarkmode ? "Light Mode" : "Dark Mode"}
 							status={isDarkmode ? "success" : "warning"}
