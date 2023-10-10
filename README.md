@@ -1,6 +1,9 @@
 # Wakeup Sunshine
 
 Wakeup Sunshine
+<video width="320" height="240" controls>
+  <source src="https://github.com/deeppaz/WakeupSunshine/blob/upload-showup/wakeupsunshine.mp4" type="video/mp4">
+</video>
 
 # Installation
 
