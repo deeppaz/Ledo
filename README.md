@@ -2,11 +2,15 @@
 
 Wakeup Sunshine
 
-
-
 https://github.com/deeppaz/WakeupSunshine/assets/37597027/b9012233-821a-46d3-b18b-24089f550585
 
+## What's next?
 
+* Alarm
+  - Time picker
+  - _(Customize color)_
+* Color picker  
+* Brightness adjustment
 
 # Installation
 
