@@ -9,8 +9,8 @@ https://github.com/deeppaz/WakeupSunshine/assets/37597027/b9012233-821a-46d3-b18
 * Alarm
   - Time picker
   - _(Customize color)_
-* Color picker  
-* Brightness adjustment
+* <s>Color picker</s>  
+* <s>Brightness adjustment</s>
 
 # Installation
 
