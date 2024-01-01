@@ -1,11 +1,9 @@
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
 import { View, PermissionsAndroid, ScrollView, RefreshControl } from 'react-native';
-import { Layout, RadioButton, Text, Button, TopNav, SectionContent, Section, SectionImage } from 'react-native-rapi-ui';
+import { Layout, RadioButton, Text, Button, TopNav, SectionContent, Section, useTheme } from 'react-native-rapi-ui';
 import RNBluetoothClassic, { BTEvents, BTCharsets, BluetoothEventType, BluetoothDevice } from 'react-native-bluetooth-classic';
 import { Ionicons } from '@expo/vector-icons';
 
-PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN)
-PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT)
 
 export default function Home() {
 	const [connectedDevice, setConnectedDevice] = useState({})
@@ -19,6 +17,7 @@ export default function Home() {
 	const [isLambOn, setIsLambOn] = useState(false);
 	const [isLambOff, setIsLambOff] = useState(false);
 	const [loading, setLoading] = useState(false);
+	const { isDarkmode, setTheme } = useTheme();
 
 	useEffect(() => {
 		currentConnectedDevices();
@@ -137,7 +136,7 @@ export default function Home() {
 						<Section>
 							<SectionContent>
 								<Text style={{ fontWeight: "700" }} size='h2'>Hello</Text>
-								<Text>Welcome to ~{"\n"}<Text style={{ fontWeight: "700", fontSize: 20 }}>Wakeup Sunshine</Text></Text>
+								<Text>Welcome to {"\n"}<Text style={{ fontWeight: "700", fontSize: 20 }}>Wakeup Sunshine</Text></Text>
 								<Text style={{ fontSize: 10, paddingTop: 10, fontStyle: "italic" }}>More information, you can go About section</Text>
 							</SectionContent>
 						</Section>
