@@ -1,9 +1,10 @@
-import React, { Fragment, useCallback, useEffect, useState } from 'react';
-import { View, PermissionsAndroid, ScrollView, RefreshControl, Text } from 'react-native';
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import { View, PermissionsAndroid, ScrollView, RefreshControl, Text, Modal, Pressable, StyleSheet } from 'react-native';
 import { Layout, RadioButton, Button, TopNav, SectionContent, Section, useTheme } from 'react-native-rapi-ui';
 import RNBluetoothClassic, { BTEvents, BTCharsets, BluetoothEventType, BluetoothDevice } from 'react-native-bluetooth-classic';
 import { Ionicons } from '@expo/vector-icons';
 import { styled } from 'nativewind';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 const StyledView = styled(View)
 const StyledText = styled(Text)
@@ -25,6 +26,9 @@ export default function Profile() {
 	const [isLambOff, setIsLambOff] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const { isDarkmode, setTheme } = useTheme();
+	const [modalVisible, setModalVisible] = useState(false);
+	const [date, setDate] = useState(new Date(1598051730000));
+	const currentDate = new Date();
 
 	useEffect(() => {
 		currentConnectedDevices();
@@ -33,15 +37,68 @@ export default function Profile() {
 		RNBluetoothClassic.isBluetoothEnabled().then((res) => {
 			setIsBluetoothEnabled(res)
 		});
+
+		// setInterval(() => {
+		// 	turnOnLamb();
+		// }, 1000)
 	}, [refreshing]);
 
 	const onRefresh = useCallback(() => {
 		setRefreshing(true);
 		setTimeout(() => {
 			setRefreshing(false);
-		}, 2000)
-
+		}, 1000)
 	}, [])
+
+	async function turnOnLamb() {
+		if (currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) == date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })) {
+			try {
+				(await RNBluetoothClassic.connectToDevice(deviceAddress)).write("CMD:1,1", "utf-8").then((res) => {
+					setIsLambOn(res)
+				}).catch((err) => {
+					console.log(err);
+				})
+			} catch (error) {
+				console.log(error)
+			}
+		} else {
+			try {
+				(await RNBluetoothClassic.connectToDevice(deviceAddress)).write("CMD:1,0", "utf-8").then((res) => {
+					setIsLambOff(res);
+				}).catch((err) => {
+					console.log(err)
+				})
+			} catch (error) {
+				console.log(error)
+			}
+		}
+	}
+
+	const onChange = (event, selectedDate) => {
+		const currentDate = selectedDate;
+		setDate(currentDate);
+	};
+
+	const showMode = (currentMode) => {
+		DateTimePickerAndroid.open({
+			value: date,
+			onChange,
+			mode: currentMode,
+			is24Hour: true,
+			timeZoneName: "Europe/Istanbul",
+			display: "spinner"
+		});
+	};
+
+	const showDatepicker = () => {
+		showMode('date');
+	};
+
+	const showTimepicker = () => {
+		showMode('time');
+	};
+	console.log(currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
+	console.log(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
 
 	async function requestAccessFineLocationPermission() {
 		const granted = await PermissionsAndroid.request(
@@ -94,7 +151,6 @@ export default function Profile() {
 	}
 
 	async function changeColor(color) {
-		console.log(color)
 		try {
 			(await RNBluetoothClassic.connectToDevice(deviceAddress)).write(color, "utf-8").then((res) => {
 				// setLoading(true);
@@ -109,8 +165,7 @@ export default function Profile() {
 		}
 	}
 
-	async function changeBrightness(count) {
-		console.log(count)
+	async function changeBrightness() {
 		try {
 			(await RNBluetoothClassic.connectToDevice(deviceAddress)).write("CMD:3," + brightnessCount, "utf-8").then((res) => {
 				// setLoading(true);
@@ -200,8 +255,8 @@ export default function Profile() {
 							<SectionContent>
 								<Text style={{ fontWeight: "700", fontSize: 20, paddingBottom: 10 }}>Set brightness</Text>
 								<StyledView className="flex flex-row flex-wrap content-center items-center gap-2 overflow-hidden">
-									<Box onPress={decrementBrightnessCount} boxColor={"bg-black"} className={"pt-4"}>Decrease -</Box>
-									<Box onPress={incrementBrightnessCount} boxColor={"bg-black"} className={"pt-4"}>Increase +</Box>
+									<Box onPress={decrementBrightnessCount} boxColor={"bg-[#c43042]"} className={"pt-4"}>Decrease -</Box>
+									<Box onPress={incrementBrightnessCount} boxColor={"bg-[#c43042]"} className={"pt-4"}>Increase +</Box>
 								</StyledView>
 							</SectionContent>
 						</Section>
@@ -218,12 +273,49 @@ export default function Profile() {
 							<SectionContent>
 								<Text style={{ fontWeight: "700", fontSize: 20, paddingBottom: 10 }}>Alarm mode</Text>
 								<StyledView className="flex flex-row flex-wrap content-center items-center gap-2 overflow-hidden">
-									<Box onPress={() => changeColor("CMD:3,010")} boxColor={"bg-black"} className={"pt-4"}>Set alarm</Box>
+									<Box onPress={() => setModalVisible(true)} boxColor={"bg-[#c43042]"} className={"pt-4"}>Set alarm</Box>
 								</StyledView>
 							</SectionContent>
 						</Section>
 
 					</View>
+
+					{/* set alarm modal */}
+					<Modal
+						animationType="slide"
+						transparent={true}
+						visible={modalVisible}
+						onRequestClose={() => {
+							alert('Modal has been closed.');
+							setModalVisible(!modalVisible);
+						}}>
+
+						<View style={styles.centeredView}>
+							<View style={styles.modalView}>
+								<View style={{
+									paddingLeft: 30,
+									paddingRight: 30,
+									paddingTop: 10,
+									paddingBottom: 10
+								}}>
+									<Section>
+										<SectionContent>
+											<Text style={{ fontWeight: "700", fontSize: 20, paddingBottom: 10 }}>Alarm mode</Text>
+											<StyledView className="flex flex-row flex-wrap content-center items-center gap-2 overflow-hidden">
+
+												<Box onPress={showTimepicker} boxColor={"bg-[#c43042]"} className={"pt-4"}>Set Time</Box>
+											</StyledView>
+										</SectionContent>
+									</Section>
+
+								</View>
+								<StyledView className="flex flex-row flex-wrap content-center items-center gap-2 overflow-hidden">
+									<Box onPress={turnOnLamb} boxColor={"bg-[#c43042]"} className={"pt-4"}>Save</Box>
+									<Box onPress={() => setModalVisible(!modalVisible)} boxColor={"bg-black"} className={"pt-4"}>Close</Box>
+								</StyledView>
+							</View>
+						</View>
+					</Modal>
 				</ScrollView>
 
 			</Layout>
@@ -231,3 +323,46 @@ export default function Profile() {
 
 	);
 }
+const styles = StyleSheet.create({
+	centeredView: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: 22,
+	},
+	modalView: {
+		margin: 20,
+		backgroundColor: 'white',
+		borderRadius: 20,
+		padding: 35,
+		alignItems: 'center',
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		elevation: 5,
+	},
+	button: {
+		borderRadius: 20,
+		padding: 10,
+		elevation: 2,
+	},
+	buttonOpen: {
+		backgroundColor: '#F194FF',
+	},
+	buttonClose: {
+		backgroundColor: '#2196F3',
+	},
+	textStyle: {
+		color: 'white',
+		fontWeight: 'bold',
+		textAlign: 'center',
+	},
+	modalText: {
+		marginBottom: 15,
+		textAlign: 'center',
+	},
+});
